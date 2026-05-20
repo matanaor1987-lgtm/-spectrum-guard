@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מגן ספקטרום | DHL Express Israel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root{
+  --red:#D40511;--red-light:#fef0f0;--red-mid:#fbd5d5;
+  --yellow:#FFCC00;
+  --bg:#f8f8f6;--surface:#ffffff;--surface2:#f4f4f2;
+  --border:#e5e5e2;--border2:#d0d0cc;
+  --text:#1a1a1a;--text2:#5a5a5a;--text3:#9a9a9a;
+  --green:#166534;--green-bg:#f0fdf4;--green-border:#bbf7d0;
+  --amber:#92400e;--amber-bg:#fffbeb;--amber-border:#fde68a;
+  --danger:#991b1b;--danger-bg:#fef2f2;--danger-border:#fecaca;
+  --blue:#1e3a5f;--blue-bg:#eff6ff;--blue-border:#bfdbfe;
+  --purple:#4c1d95;--purple-bg:#f5f3ff;--purple-border:#ddd6fe;
+  --radius:8px;--radius-lg:12px;--radius-xl:16px;
+  --shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* API KEY SCREEN */
+#api-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.api-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:36px 32px;max-width:420px;width:100%;box-shadow:var(--shadow-md);text-align:center}
+.api-logo{width:60px;height:60px;background:var(--red);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.api-logo i{font-size:28px;color:#fff}
+.api-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:5px}
+.api-sub{font-size:12px;color:var(--text2);margin-bottom:24px;line-height:1.6}
+.api-label{font-size:11px;font-weight:700;color:var(--text2);text-align:right;display:block;margin-bottom:5px;letter-spacing:.03em}
+.api-wrap{position:relative;margin-bottom:7px}
+.api-wrap input{width:100%;padding:11px 40px 11px 14px;border:1.5px solid var(--border2);border-radius:var(--radius);font-size:13px;font-family:'Heebo',sans-serif;background:var(--surface);color:var(--text);outline:none;transition:border-color .15s;text-align:left;direction:ltr}
+.api-wrap input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(212,5,17,.08)}
+.api-eye{position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:17px;padding:2px}
+.api-eye:hover{color:var(--text)}
+.api-hint{font-size:10px;color:var(--text3);text-align:right;margin-bottom:20px;line-height:1.6}
+.api-hint a{color:var(--red);text-decoration:none}
+.api-hint a:hover{text-decoration:underline}
+.api-btn{width:100%;padding:12px;font-size:14px;font-weight:600;cursor:pointer;border-radius:var(--radius);background:var(--red);color:#fff;border:none;font-family:'Heebo',sans-serif;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.api-btn:hover{background:#b8040f}
+.api-btn:disabled{background:#ccc;cursor:not-allowed}
+.api-err{font-size:12px;color:var(--danger);margin-top:10px;display:none;background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:var(--radius);padding:8px 12px;text-align:right}
+.api-note{font-size:10px;color:var(--text3);margin-top:14px;line-height:1.5}
+
+/* NAV */
+nav{background:var(--red);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:14px;font-weight:700;letter-spacing:.05em}
+.nav-sep{opacity:.4;margin:0 4px}
+.nav-title{color:#fff;font-size:13px;opacity:.85;font-weight:400}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.nav-key-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:10px;color:#fff;cursor:pointer;display:flex;align-items:center;gap:5px}
+.nav-key-badge:hover{background:rgba(255,255,255,.25)}
+.nav-badge{background:var(--yellow);color:#1a1a1a;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+
+/* LAYOUT */
+.container{max-width:760px;margin:0 auto;padding:24px 20px 60px}
+
+/* STEPS */
+.steps{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 18px;margin-bottom:20px}
+.step{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);flex:1}
+.step.active{color:var(--red);font-weight:600}
+.step.done{color:var(--green)}
+.sdot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;background:var(--surface)}
+.step.active .sdot{border-color:var(--red);background:var(--red);color:#fff}
+.step.done .sdot{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.sline{flex:none;width:20px;height:1px;background:var(--border);margin:0 4px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:13px;display:flex;align-items:center;gap:7px}
+.card-title i{font-size:15px;color:var(--red)}
+
+/* DOC SLOTS */
+.doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+.slot{border:1.5px dashed var(--border2);border-radius:var(--radius);padding:14px 10px;text-align:center;cursor:pointer;background:var(--surface2);transition:all .15s}
+.slot:hover{border-color:var(--red);background:var(--red-light)}
+.slot.on{border-style:solid;border-color:var(--green);background:var(--green-bg);cursor:default}
+.slot i{font-size:20px;color:var(--text3);display:block;margin-bottom:5px}
+.slot.on i{color:var(--green)}
+.slot .sl{font-size:12px;font-weight:600;color:var(--text)}
+.slot .ss{font-size:10px;color:var(--text3);margin-top:2px}
+.slot .sf{font-size:10px;color:var(--green);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:90%;margin-inline:auto}
+.slot .rm{font-size:10px;color:var(--danger);background:none;border:none;cursor:pointer;margin-top:4px;font-family:'Heebo',sans-serif}
+input[type=file]{display:none}
+
+/* FIELDS */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+.field-grid.full{grid-template-columns:1fr}
+.field label{font-size:11px;font-weight:700;color:var(--text2);display:block;margin-bottom:4px;letter-spacing:.02em}
+.field input{width:100%;padding:9px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;font-family:'Heebo',sans-serif;background:var(--surface);color:var(--text);transition:border-color .15s;outline:none}
+.field input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(212,5,17,.08)}
+.hint{font-size:10px;color:var(--text3);line-height:1.5;margin-top:8px;display:flex;align-items:flex-start;gap:5px}
+.hint i{font-size:12px;margin-top:1px;flex-shrink:0}
+
+/* GO BUTTON */
+.go-btn{width:100%;padding:13px;font-size:14px;font-weight:600;cursor:pointer;border-radius:var(--radius);background:var(--red);color:#fff;border:none;transition:all .18s;font-family:'Heebo',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+.go-btn:hover{background:#b8040f;box-shadow:var(--shadow-md)}
+.go-btn:disabled{background:#ccc;cursor:not-allowed;box-shadow:none}
+
+/* LOADING */
+#loading{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px 24px;text-align:center;box-shadow:var(--shadow)}
+.spin-wrap{width:44px;height:44px;margin:0 auto 14px;border:3px solid var(--red-mid);border-top-color:var(--red);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lmsg{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px}
+.lsub{font-size:12px;color:var(--text2)}
+.prog-list{margin-top:18px;display:inline-flex;flex-direction:column;gap:6px;text-align:right}
+.pi{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:7px}
+.pi.act{color:var(--red);font-weight:600}
+.pi.dn{color:var(--green)}
+.pi i{font-size:14px;flex-shrink:0}
+
+/* RESULTS */
+#results{display:none}
+.tab-bar{display:flex;border-bottom:2px solid var(--border);margin-bottom:18px}
+.tab{font-size:13px;font-weight:500;padding:9px 16px;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'Heebo',sans-serif;transition:color .15s;display:flex;align-items:center;gap:5px}
+.tab:hover{color:var(--text)}
+.tab.act{color:var(--red);border-bottom-color:var(--red);font-weight:600}
+.panel{display:none}.panel.act{display:block}
+
+/* VERDICT */
+.vbar{border-radius:var(--radius-lg);padding:13px 16px;display:flex;align-items:flex-start;gap:11px;margin-bottom:14px;border:1px solid}
+.vbar.pass{background:var(--green-bg);border-color:var(--green-border)}
+.vbar.warn{background:var(--amber-bg);border-color:var(--amber-border)}
+.vbar.fail{background:var(--danger-bg);border-color:var(--danger-border)}
+.vbar i.vi{font-size:22px;flex-shrink:0;margin-top:1px}
+.vbar.pass i.vi,.vbar.pass .vt{color:var(--green)}
+.vbar.warn i.vi,.vbar.warn .vt{color:var(--amber)}
+.vbar.fail i.vi,.vbar.fail .vt{color:var(--danger)}
+.vt{font-size:14px;font-weight:600}
+.vs{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.5}
+
+/* SCORES */
+.sc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px}
+.sc{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:11px 8px;text-align:center}
+.sc .n{font-size:22px;font-weight:600;color:var(--text)}
+.sc .l{font-size:10px;color:var(--text3);margin-top:1px;font-weight:500;letter-spacing:.03em}
+.sc.ok .n{color:var(--green)}.sc.warn .n{color:var(--amber)}.sc.err .n{color:var(--danger)}.sc.info .n{color:var(--blue)}
+
+/* DOC SECTIONS */
+.sec-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin:14px 0 8px}
+.dsec{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:9px;overflow:hidden}
+.dsh{padding:9px 13px;display:flex;align-items:center;gap:7px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.dsh i.di{font-size:14px}
+.dsh .dt{font-size:12px;font-weight:600;color:var(--text);flex:1}
+.bdg{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:600;letter-spacing:.02em}
+.bdg.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.bdg.warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.bdg.fail{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-border)}
+.cr{display:flex;align-items:flex-start;gap:8px;padding:8px 13px;border-bottom:1px solid var(--border)}
+.cr:last-child{border-bottom:none}
+.cci{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cci.ok{background:var(--green-bg)}.cci.ok i{color:var(--green);font-size:10px}
+.cci.err{background:var(--danger-bg)}.cci.err i{color:var(--danger);font-size:10px}
+.cci.warn{background:var(--amber-bg)}.cci.warn i{color:var(--amber);font-size:10px}
+.cci.skip{background:var(--surface2)}.cci.skip i{color:var(--text3);font-size:10px}
+.cl{font-size:12px;font-weight:600;color:var(--text)}
+.cd{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4}
+
+/* CROSS */
+.cross-box{border-radius:var(--radius);padding:11px 13px;margin-bottom:10px;border:1px solid;font-size:12px}
+.cross-box.ok{background:var(--green-bg);border-color:var(--green-border)}
+.cross-box.fail{background:var(--danger-bg);border-color:var(--danger-border)}
+.cross-box.warn{background:var(--amber-bg);border-color:var(--amber-border)}
+.cross-box .ct{font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:5px}
+.cross-box.ok .ct{color:var(--green)}.cross-box.fail .ct{color:var(--danger)}.cross-box.warn .ct{color:var(--amber)}
+
+/* PTS WARNING */
+.pts-warn{background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:var(--radius);padding:9px 13px;font-size:12px;color:var(--danger);margin-bottom:11px;display:none;gap:7px;align-items:flex-start}
+.pts-warn i{font-size:15px;flex-shrink:0}
+
+/* ROUTE CARD */
+.route-card{border-radius:var(--radius-lg);padding:16px;margin-bottom:10px;border:1px solid;box-shadow:var(--shadow)}
+.route-card.declaration{background:var(--green-bg);border-color:var(--green-border)}
+.route-card.manager{background:var(--amber-bg);border-color:var(--amber-border)}
+.route-card.spectrum{background:var(--danger-bg);border-color:var(--danger-border)}
+.route-card.incomplete{background:var(--blue-bg);border-color:var(--blue-border)}
+.route-card.type_approval{background:var(--purple-bg);border-color:var(--purple-border)}
+.rn{font-size:14px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.route-card.declaration .rn{color:var(--green)}
+.route-card.manager .rn{color:var(--amber)}
+.route-card.spectrum .rn{color:var(--danger)}
+.route-card.incomplete .rn{color:var(--blue)}
+.route-card.type_approval .rn{color:var(--purple)}
+.route-sub{font-size:10px;color:var(--text3);margin-bottom:9px}
+.route-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.route-section{background:rgba(255,255,255,.6);border-radius:var(--radius);padding:9px 12px;margin-bottom:9px}
+.route-section-title{font-size:10px;font-weight:700;letter-spacing:.04em;margin-bottom:6px;text-transform:uppercase}
+.block-item{font-size:11px;color:var(--danger);padding:2px 0;padding-right:10px}
+.rs{display:flex;align-items:flex-start;gap:7px;padding:3px 0;font-size:11px;color:var(--text2);line-height:1.4}
+.rsn{min-width:19px;height:19px;border-radius:50%;background:rgba(255,255,255,.8);border:1px solid rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+.rw{display:flex;align-items:flex-start;gap:5px;font-size:11px;color:var(--amber);padding:2px 0;line-height:1.4}
+.rw i{font-size:12px;flex-shrink:0;margin-top:1px}
+.route-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--text2);margin-bottom:9px}
+.route-meta span{display:flex;align-items:center;gap:4px}
+.risk-box{background:rgba(0,0,0,.04);border-radius:var(--radius);padding:8px 11px;font-size:11px;color:var(--text2);line-height:1.4}
+.risk-box strong{color:var(--text)}
+
+/* HISTORY */
+.hist-item{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:7px;cursor:pointer;transition:all .15s}
+.hist-item:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+.hdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.hdot.pass{background:var(--green)}.hdot.warn{background:#d97706}.hdot.fail{background:var(--danger)}
+.hi{flex:1}
+.hi strong{font-size:12px;font-weight:600}
+.ht{font-size:10px;color:var(--text3);margin-top:1px}
+.empty-hist{text-align:center;padding:36px;background:var(--surface2);border-radius:var(--radius);color:var(--text3);font-size:13px}
+.empty-hist i{font-size:26px;display:block;margin-bottom:8px}
+
+/* ACTIONS */
+.action-bar{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}
+.btn2{font-size:12px;padding:7px 13px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);cursor:pointer;color:var(--text2);display:inline-flex;align-items:center;gap:5px;font-family:'Heebo',sans-serif;font-weight:500;transition:all .15s}
+.btn2:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+
+footer{text-align:center;padding:24px;font-size:10px;color:var(--text3);border-top:1px solid var(--border);margin-top:40px}
+
+@media(max-width:540px){
+  .doc-grid,.field-grid{grid-template-columns:1fr}
+  .sc-grid{grid-template-columns:repeat(2,1fr)}
+  .steps{display:none}
+  .api-card{padding:26px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- API KEY SCREEN -->
+<div id="api-screen">
+  <div class="api-card">
+    <div class="api-logo"><i class="ti ti-shield-check"></i></div>
+    <div class="api-title">מגן ספקטרום</div>
+    <div class="api-sub">כלי בדיקת מסמכי אישורי התאמה<br>DHL Express Israel — מחלקת מכס</div>
+    <label class="api-label">Anthropic API Key</label>
+    <div class="api-wrap">
+      <input type="password" id="api-in" placeholder="sk-ant-api03-..." oninput="chkK()" onkeydown="if(event.key==='Enter')saveK()">
+      <button class="api-eye" onclick="toggleEye()" aria-label="הצג/הסתר"><i class="ti ti-eye" id="eye-ic"></i></button>
+    </div>
+    <div class="api-hint">
+      המפתח נשמר במכשיר שלך בלבד ולא עובר לשום שרת.<br>
+      אין לך מפתח? <a href="https://console.anthropic.com/keys" target="_blank">console.anthropic.com/keys ←</a>
+    </div>
+    <button class="api-btn" id="api-btn" disabled onclick="saveK()"><i class="ti ti-lock-open"></i>כניסה לכלי</button>
+    <div class="api-err" id="api-err"></div>
+    <div class="api-note">לשימוש פנימי בלבד — DHL Express Israel 2026</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app" style="display:none">
+
+<nav>
+  <div class="nav-logo">DHL<span class="nav-sep">|</span><span class="nav-title">מגן ספקטרום</span></div>
+  <div class="nav-actions">
+    <div class="nav-key-badge" onclick="changeKey()" title="החלף API Key"><i class="ti ti-key" style="font-size:12px"></i>API Key</div>
+    <div class="nav-badge">BETA</div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="steps" id="sbar">
+    <div class="step active" id="s1"><div class="sdot">1</div>העלאה</div>
+    <div class="sline"></div>
+    <div class="step" id="s2"><div class="sdot">2</div>ניתוח</div>
+    <div class="sline"></div>
+    <div class="step" id="s3"><div class="sdot">3</div>ממצאים</div>
+    <div class="sline"></div>
+    <div class="step" id="s4"><div class="sdot">4</div>היסטוריה</div>
+  </div>
+
+  <div id="upload-screen">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-files"></i>מסמכים לבדיקה</div>
+      <div class="doc-grid">
+        <div class="slot" id="sl-ds" onclick="trig('ds')"><i class="ti ti-cpu"></i><div class="sl">Datasheet</div><div class="ss">מפרט טכני יצרן</div></div>
+        <div class="slot" id="sl-dc" onclick="trig('dc')"><i class="ti ti-certificate"></i><div class="sl">DoC</div><div class="ss">תעודת תאימות EU</div></div>
+        <div class="slot" id="sl-inv" onclick="trig('inv')"><i class="ti ti-receipt"></i><div class="sl">Invoice</div><div class="ss">חשבונית ספק</div></div>
+      </div>
+      <input type="file" id="f-ds" accept=".pdf,.png,.jpg,.jpeg" onchange="got('ds',this.files[0])">
+      <input type="file" id="f-dc" accept=".pdf,.png,.jpg,.jpeg" onchange="got('dc',this.files[0])">
+      <input type="file" id="f-inv" accept=".pdf,.png,.jpg,.jpeg" onchange="got('inv',this.files[0])">
+      <div class="hint"><i class="ti ti-info-circle"></i>נדרש לפחות מסמך אחד. PDF / PNG / JPG עד 10MB.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-forms"></i>פרטי הבקשה</div>
+      <div class="field-grid">
+        <div class="field"><label>שם דגם / מק"ט</label><input type="text" id="fi-model" placeholder='ADALM PLUTO, AX200...'></div>
+        <div class="field"><label>שם היבואן</label><input type="text" id="fi-imp" placeholder='שם מלא כולל בע"מ'></div>
+      </div>
+      <div class="field-grid">
+        <div class="field"><label>יצרן</label><input type="text" id="fi-mfr" placeholder='Intel, Cisco, Analog Devices'></div>
+        <div class="field"><label>טכנולוגיה</label><input type="text" id="fi-tech" placeholder='WiFi / BT / SDR / LTE'></div>
+      </div>
+      <div class="field-grid full">
+        <div class="field"><label>הערות לבדיקה</label><input type="text" id="fi-notes" placeholder='ציוד רפואי, כרטיס פיתוח, ייעוד מיוחד...'></div>
+      </div>
+    </div>
+
+    <button class="go-btn" id="go-btn" disabled onclick="run()">
+      <i class="ti ti-search"></i>בדוק מסמכים וקבע נתיב הגשה
+    </button>
+  </div>
+
+  <div id="loading">
+    <div class="spin-wrap"></div>
+    <div class="lmsg" id="lmsg">מנתח מסמכים...</div>
+    <div class="lsub">Claude בוחן כל מסמך לפי תקנות משרד התקשורת</div>
+    <div class="prog-list" id="plist"></div>
+  </div>
+
+  <div id="results">
+    <div class="tab-bar">
+      <button class="tab act" onclick="swTab('t-res',this)"><i class="ti ti-clipboard-check" style="font-size:13px"></i>ממצאים</button>
+      <button class="tab" onclick="swTab('t-route',this)"><i class="ti ti-route" style="font-size:13px"></i>נתיב הגשה</button>
+      <button class="tab" onclick="swTab('t-hist',this)"><i class="ti ti-history" style="font-size:13px"></i>היסטוריה</button>
+    </div>
+
+    <div class="panel act" id="t-res">
+      <div class="vbar" id="vbar"><i class="ti vi" id="vico"></i><div><div class="vt" id="vtit"></div><div class="vs" id="vsub"></div></div></div>
+      <div class="sc-grid">
+        <div class="sc" id="sc-ok"><div class="n" id="n-ok">0</div><div class="l">תקין</div></div>
+        <div class="sc" id="sc-w"><div class="n" id="n-w">0</div><div class="l">אזהרה</div></div>
+        <div class="sc" id="sc-f"><div class="n" id="n-f">0</div><div class="l">כשל</div></div>
+        <div class="sc" id="sc-pt"><div class="n" id="n-pt">0</div><div class="l">נק׳ סיכון</div></div>
+      </div>
+      <div class="pts-warn" id="ptw"><i class="ti ti-alert-circle"></i><span id="ptwtxt"></span></div>
+      <div id="docs-out"></div>
+      <div id="cross-out"></div>
+      <div class="action-bar">
+        <button class="btn2" onclick="newCheck()"><i class="ti ti-refresh"></i>בדיקה חדשה</button>
+        <button class="btn2" onclick="copyRep()"><i class="ti ti-copy"></i>העתק דוח</button>
+        <button class="btn2" onclick="swTab('t-route',document.querySelectorAll('.tab')[1])"><i class="ti ti-route"></i>ראה נתיב הגשה</button>
+      </div>
+    </div>
+
+    <div class="panel" id="t-route">
+      <div id="route-out"></div>
+      <div class="action-bar">
+        <button class="btn2" onclick="newCheck()"><i class="ti ti-refresh"></i>בדיקה חדשה</button>
+        <button class="btn2" onclick="copyRep()"><i class="ti ti-copy"></i>העתק דוח</button>
+      </div>
+    </div>
+
+    <div class="panel" id="t-hist">
+      <div id="hist-out"></div>
+    </div>
+  </div>
+</div>
+
+<footer>מגן ספקטרום | DHL Express Israel | נוהל מחלקתי בדיקת אישורי התאמה | 2026</footer>
+</div>
+
+<script>
+// ─── API KEY MANAGEMENT ───────────────────────────────────────
+let API_KEY='';
+
+function chkK(){
+  const v=document.getElementById('api-in').value.trim();
+  document.getElementById('api-btn').disabled=v.length<20;
+}
+function toggleEye(){
+  const inp=document.getElementById('api-in');
+  const ic=document.getElementById('eye-ic');
+  if(inp.type==='password'){inp.type='text';ic.className='ti ti-eye-off'}
+  else{inp.type='password';ic.className='ti ti-eye'}
+}
+function saveK(){
+  const v=document.getElementById('api-in').value.trim();
+  if(!v.startsWith('sk-')){
+    const e=document.getElementById('api-err');
+    e.style.display='block';e.textContent='מפתח לא תקין — חייב להתחיל ב sk-';return;
+  }
+  API_KEY=v;
+  try{localStorage.setItem('sg_api_key',v)}catch(e){}
+  document.getElementById('api-screen').style.display='none';
+  document.getElementById('main-app').style.display='block';
+}
+function changeKey(){
+  document.getElementById('api-in').value='';
+  document.getElementById('api-err').style.display='none';
+  document.getElementById('api-btn').disabled=true;
+  document.getElementById('main-app').style.display='none';
+  document.getElementById('api-screen').style.display='flex';
+}
+function initKey(){
+  try{const k=localStorage.getItem('sg_api_key');if(k&&k.startsWith('sk-')){API_KEY=k;document.getElementById('api-screen').style.display='none';document.getElementById('main-app').style.display='block';return;}}catch(e){}
+  document.getElementById('api-screen').style.display='flex';
+}
+
+// ─── FILE HANDLING ────────────────────────────────────────────
+const LMAP={ds:'Datasheet',dc:'DoC',inv:'Invoice'};
+const IMAP={ds:'ti-cpu',dc:'ti-certificate',inv:'ti-receipt'};
+const SDESC={ds:'מפרט טכני יצרן',dc:'תעודת תאימות EU',inv:'חשבונית ספק'};
+const F={ds:null,dc:null,inv:null};
+const B={ds:null,dc:null,inv:null};
+const M={ds:null,dc:null,inv:null};
+let lastR=null,history=[],dts_g=[];
+
+function trig(t){if(!F[t])document.getElementById('f-'+t).click()}
+function got(t,file){
+  if(!file)return;F[t]=file;
+  const slot=document.getElementById('sl-'+t);
+  slot.classList.add('on');slot.onclick=null;
+  const fn=file.name.length>18?file.name.slice(0,16)+'…':file.name;
+  slot.innerHTML=`<i class="ti ti-circle-check"></i><div class="sl">${LMAP[t]}</div><div class="sf">${fn}</div><button class="rm" onclick="rem('${t}')">הסר</button>`;
+  const r=new FileReader();
+  r.onload=e=>{const p=e.target.result.split(',');B[t]=p[1];M[t]=file.type||'application/pdf'};
+  r.readAsDataURL(file);chkReady();
+}
+function rem(t){
+  F[t]=null;B[t]=null;M[t]=null;
+  document.getElementById('f-'+t).value='';
+  const s=document.getElementById('sl-'+t);s.className='slot';s.onclick=()=>trig(t);
+  s.innerHTML=`<i class="ti ${IMAP[t]}"></i><div class="sl">${LMAP[t]}</div><div class="ss">${SDESC[t]}</div>`;
+  chkReady();
+}
+function chkReady(){document.getElementById('go-btn').disabled=!(F.ds||F.dc||F.inv)}
+
+// ─── PROMPT ───────────────────────────────────────────────────
+function buildPrompt(){
+  const mo=document.getElementById('fi-model').value.trim();
+  const im=document.getElementById('fi-imp').value.trim();
+  const mfr=document.getElementById('fi-mfr').value.trim();
+  const tech=document.getElementById('fi-tech').value.trim();
+  const notes=document.getElementById('fi-notes').value.trim();
+  const dts=Object.keys(F).filter(t=>F[t]);
+  let ctx='';
+  if(mo)ctx+=`דגם:"${mo}". `;if(im)ctx+=`יבואן:"${im}". `;if(mfr)ctx+=`יצרן:"${mfr}". `;if(tech)ctx+=`טכנולוגיה:"${tech}". `;if(notes)ctx+=`הערות:"${notes}". `;
+  return `אתה מומחה לרגולציה של ציוד תקשורת אלחוטי בישראל עפ"י פקודת הטלגרף האלחוטי ותקנות משרד התקשורת.
+${ctx}הוצגו ${dts.length} מסמכים: ${dts.map((t,i)=>`${i+1}=${LMAP[t]}`).join(', ')}.
+ענה ב-JSON בלבד ללא טקסט נוסף:
+{"verdict":"pass"|"warn"|"fail","verdict_title":"עברית","verdict_sub":"עברית","risk_points":0-70,"docs":{${dts.map(t=>`"${t}":{"status":"pass"|"warn"|"fail","checks":[{"id":"","label":"עברית","status":"ok"|"warn"|"fail"|"skip","detail":"עברית"}]}`).join(',')}},"cross_check":{"status":"ok"|"warn"|"fail"|"na","title":"עברית","detail":"עברית"},"submission_route":{"route":"declaration"|"manager"|"spectrum"|"type_approval"|"incomplete","route_name_he":"שם מסלול","legal_basis":"סעיף חוקי","summary":"עברית","can_submit_now":true|false,"blocking_issues":[],"steps":[],"warnings":[],"expected_time":"עברית","risk_if_wrong":"עברית"},"summary_text":"סיכום עברית"}
+DATASHEET:תדרים(חריגה?10-6000MHz/325-3800MHz?),SDR/Eval Board/Dev Kit,הספק,יצרן+דגם,מקוריות,טכנולוגיה.
+DoC:2014/53/EU,דגם מדויק,חתימה+חותמת,שלמות,תקני EN,מורשה,תאריך.
+INVOICE:יבואן מלא,תיאור טובין,מק"ט,HS Code,ארץ מקור,תאריך+חתימה+כמות+מחיר.
+CROSS:דגם זהה?יבואן תואם?תדרי Datasheet=DoC?
+מסלולים:declaration=סטנדרטי מהיר|manager=מורכב/אנושי|spectrum=תדרים חורגים/SDR|type_approval=ייבוא סדרתי גדול|incomplete=מסמכים חסרים.`;
+}
+
+// ─── ANALYSIS ─────────────────────────────────────────────────
+async function run(){
+  const dts=Object.keys(F).filter(t=>F[t]);
+  if(!dts.length){alert('נא להעלות לפחות מסמך אחד');return}
+  if(!API_KEY){alert('חסר API Key');changeKey();return}
+  dts_g=dts;
+  document.getElementById('upload-screen').style.display='none';
+  document.getElementById('loading').style.display='block';
+  setStep(2);
+  const plist=document.getElementById('plist');
+  plist.innerHTML=[...dts.map(t=>`<div class="pi" id="pi-${t}"><i class="ti ti-circle"></i>בודק ${LMAP[t]}...</div>`),
+    dts.length>1?'<div class="pi" id="pi-x"><i class="ti ti-circle"></i>מצליב מסמכים...</div>':'',
+    '<div class="pi" id="pi-r"><i class="ti ti-circle"></i>קובע נתיב הגשה...</div>',
+    '<div class="pi" id="pi-d"><i class="ti ti-circle"></i>מכין דוח מסכם...</div>'
+  ].filter(Boolean).join('');
+  const allPi=plist.querySelectorAll('.pi');
+  const msgs=['מנתח מסמכים...','מזהה תדרים...','בודק תקנות...','מצליב מסמכים...','קובע נתיב הגשה...'];
+  let mi=0;
+  const itv=setInterval(()=>{
+    document.getElementById('lmsg').textContent=msgs[mi%msgs.length];
+    const idx=Math.min(mi,allPi.length-1);
+    allPi.forEach((el,i)=>{
+      el.classList.remove('act','dn');el.querySelector('i').style.animation='';
+      if(i<idx){el.classList.add('dn');el.querySelector('i').className='ti ti-circle-check'}
+      else if(i===idx){el.classList.add('act');el.querySelector('i').className='ti ti-loader-2';el.querySelector('i').style.animation='spin 1s linear infinite'}
+      else el.querySelector('i').className='ti ti-circle';
+    });mi++;
+  },1000);
+  try{
+    const ca=[];
+    dts.forEach((t,i)=>{
+      const isImg=M[t].startsWith('image/');
+      ca.push({type:isImg?'image':'document',source:{type:'base64',media_type:M[t],data:B[t]}});
+      ca.push({type:'text',text:`[מסמך ${i+1}: ${LMAP[t]}]`});
+    });
+    ca.push({type:'text',text:buildPrompt()});
+    const proxyUrl='https://corsproxy.io/?url='+encodeURIComponent('https://api.anthropic.com/v1/messages');
+    const resp=await fetch(proxyUrl,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-request-header':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:ca}]})
+    });
+    const data=await resp.json();
+    clearInterval(itv);
+    document.getElementById('loading').style.display='none';
+    if(data.error){showErr('שגיאת API: '+(data.error.message||'נסה שוב'));return}
+    const raw=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    let r;
+    try{r=JSON.parse(raw.replace(/```json|```/g,'').trim())}
+    catch(e){showErr('שגיאת פרסור. נסה שוב.');return}
+    lastR=r;saveHist(r);renderAll(r);setStep(3);
+  }catch(e){
+    clearInterval(itv);document.getElementById('loading').style.display='none';
+    showErr('שגיאת חיבור. בדוק אינטרנט ונסה שוב.');
+  }
+}
+
+// ─── RENDER ───────────────────────────────────────────────────
+function renderAll(r){
+  renderVerdict(r);renderDocs(r);renderCross(r);renderRoute(r);renderHist();
+  document.getElementById('results').style.display='block';
+}
+function renderVerdict(r){
+  const vb=document.getElementById('vbar');vb.className='vbar '+r.verdict;
+  const im={pass:'ti-circle-check',warn:'ti-alert-triangle',fail:'ti-circle-x'};
+  document.getElementById('vico').className='ti vi '+(im[r.verdict]||'ti-circle-x');
+  document.getElementById('vtit').textContent=r.verdict_title||'';
+  document.getElementById('vsub').textContent=r.verdict_sub||'';
+  let ok=0,w=0,f=0;
+  dts_g.forEach(t=>{((r.docs&&r.docs[t]&&r.docs[t].checks)||[]).forEach(c=>{if(c.status==='ok')ok++;else if(c.status==='warn')w++;else if(c.status==='fail')f++})});
+  document.getElementById('n-ok').textContent=ok;document.getElementById('n-w').textContent=w;document.getElementById('n-f').textContent=f;
+  const pts=Math.round(r.risk_points||0);document.getElementById('n-pt').textContent=pts;
+  document.getElementById('sc-ok').className='sc'+(ok>0?' ok':'');
+  document.getElementById('sc-w').className='sc'+(w>0?' warn':'');
+  document.getElementById('sc-f').className='sc'+(f>0?' err':'');
+  document.getElementById('sc-pt').className='sc'+(pts>=30?' err':pts>0?' warn':'');
+  const pw=document.getElementById('ptw');
+  if(pts>=30){pw.style.display='flex';document.getElementById('ptwtxt').textContent=`ניתוח מצביע על ${pts} נקודות הפרה פוטנציאליות — הגשה שגויה עלולה לחסום את הכרטיס החכם.`}
+  else pw.style.display='none';
+}
+function renderDocs(r){
+  const out=document.getElementById('docs-out');out.innerHTML='<div class="sec-title">ממצאים לפי מסמך</div>';
+  dts_g.forEach(t=>{
+    const d=r.docs&&r.docs[t];if(!d)return;
+    const sec=document.createElement('div');sec.className='dsec';
+    const sc=d.status==='pass'?'ok':d.status==='warn'?'warn':'fail';
+    const sl=d.status==='pass'?'תקין':d.status==='warn'?'יש אזהרות':'נמצאו כשלים';
+    const ic=d.status==='pass'?'var(--green)':d.status==='warn'?'var(--amber)':'var(--danger)';
+    sec.innerHTML=`<div class="dsh"><i class="ti ${IMAP[t]} di" style="color:${ic}"></i><span class="dt">${LMAP[t]}</span><span class="bdg ${sc}">${sl}</span></div>`;
+    (d.checks||[]).forEach(c=>{
+      const ci=c.status==='ok'?'ok':c.status==='warn'?'warn':c.status==='fail'?'err':'skip';
+      const cic=c.status==='ok'?'ti-check':c.status==='warn'?'ti-alert-triangle':c.status==='fail'?'ti-x':'ti-minus';
+      const row=document.createElement('div');row.className='cr';
+      row.innerHTML=`<div class="cci ${ci}"><i class="ti ${cic}"></i></div><div><div class="cl">${c.label||''}</div><div class="cd">${c.detail||''}</div></div>`;
+      sec.appendChild(row);
+    });
+    out.appendChild(sec);
+  });
+}
+function renderCross(r){
+  const out=document.getElementById('cross-out');out.innerHTML='';
+  if(dts_g.length<2||!r.cross_check||r.cross_check.status==='na')return;
+  const cs=r.cross_check;
+  const div=document.createElement('div');div.className='cross-box '+(cs.status==='ok'?'ok':cs.status==='warn'?'warn':'fail');
+  div.innerHTML=`<div class="ct"><i class="ti ti-arrows-exchange" style="font-size:14px"></i>${cs.title||'הצלבה בין מסמכים'}</div><div style="font-size:11px;color:var(--text2);line-height:1.5">${cs.detail||''}</div>`;
+  out.appendChild(div);
+}
+function renderRoute(r){
+  const out=document.getElementById('route-out');out.innerHTML='';
+  const sr=r.submission_route;if(!sr)return;
+  const rcls=sr.route||'incomplete';
+  const card=document.createElement('div');card.className='route-card '+rcls;
+  const sb=sr.can_submit_now?`<span class="bdg ok">ניתן להגיש</span>`:`<span class="bdg fail">לא ניתן להגיש עדיין</span>`;
+  let h=`<div class="rn"><span><i class="ti ti-route" style="font-size:15px;vertical-align:-2px;margin-left:5px"></i>${sr.route_name_he||rcls}</span>${sb}</div>`;
+  if(sr.legal_basis)h+=`<div class="route-sub">${sr.legal_basis}</div>`;
+  if(sr.summary)h+=`<div class="route-desc">${sr.summary}</div>`;
+  if(sr.blocking_issues&&sr.blocking_issues.length){
+    h+=`<div class="route-section"><div class="route-section-title" style="color:var(--danger)"><i class="ti ti-ban" style="font-size:11px;vertical-align:-1px;margin-left:3px"></i>בעיות חוסמות</div>`;
+    h+=sr.blocking_issues.map(b=>`<div class="block-item">• ${b}</div>`).join('');h+='</div>';
+  }
+  if(sr.steps&&sr.steps.length){
+    h+=`<div class="route-section"><div class="route-section-title"><i class="ti ti-list-check" style="font-size:11px;vertical-align:-1px;margin-left:3px"></i>שלבי הגשה</div>`;
+    h+=sr.steps.map((s,i)=>`<div class="rs"><div class="rsn">${i+1}</div><div>${s}</div></div>`).join('');h+='</div>';
+  }
+  if(sr.warnings&&sr.warnings.length){
+    h+=`<div class="route-section"><div class="route-section-title" style="color:var(--amber)"><i class="ti ti-alert-triangle" style="font-size:11px;vertical-align:-1px;margin-left:3px"></i>אזהרות</div>`;
+    h+=sr.warnings.map(w=>`<div class="rw"><i class="ti ti-alert-triangle"></i><span>${w}</span></div>`).join('');h+='</div>';
+  }
+  if(sr.expected_time)h+=`<div class="route-meta"><span><i class="ti ti-clock"></i>זמן משוער: ${sr.expected_time}</span></div>`;
+  if(sr.risk_if_wrong)h+=`<div class="risk-box"><strong>אם מגישים בנתיב הלא נכון: </strong>${sr.risk_if_wrong}</div>`;
+  card.innerHTML=h;out.appendChild(card);
+}
+
+// ─── HISTORY ──────────────────────────────────────────────────
+function saveHist(r){
+  history.unshift({ts:new Date(),model:document.getElementById('fi-model').value.trim()||'—',importer:document.getElementById('fi-imp').value.trim()||'—',verdict:r.verdict,route_name:(r.submission_route&&r.submission_route.route_name_he)||'—',summary:r.summary_text||'',pts:Math.round(r.risk_points||0)});
+  if(history.length>10)history=history.slice(0,10);
+  try{localStorage.setItem('sg_hist',JSON.stringify(history))}catch(e){}
+}
+function loadHist(){try{const s=localStorage.getItem('sg_hist');if(s)history=JSON.parse(s)}catch(e){}}
+function renderHist(){
+  const out=document.getElementById('hist-out');
+  if(!history.length){out.innerHTML='<div class="empty-hist"><i class="ti ti-history"></i>אין בדיקות קודמות</div>';return}
+  out.innerHTML='<div class="sec-title">בדיקות אחרונות</div>'+
+    history.map((h,i)=>`<div class="hist-item" onclick="showHD(${i})"><div class="hdot ${h.verdict}"></div><div class="hi"><strong>${h.model}</strong> · ${h.importer}<div class="ht">${new Date(h.ts).toLocaleDateString('he-IL')} ${new Date(h.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} · ${h.route_name} · ${h.pts} נק׳</div></div><i class="ti ti-chevron-left" style="color:var(--text3);font-size:13px"></i></div>`).join('');
+}
+function showHD(i){const h=history[i];if(h)alert(`${h.model} | ${h.importer}\nמסלול: ${h.route_name}\nנקודות: ${h.pts}\n\n${h.summary}`)}
+
+// ─── UTILS ────────────────────────────────────────────────────
+function swTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));btn.classList.add('act');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('act',p.id===id));
+  if(id==='t-hist')renderHist();
+}
+function setStep(n){
+  [1,2,3,4].forEach(i=>{const el=document.getElementById('s'+i);el.className='step'+(i<n?' done':i===n?' active':'');el.querySelector('.sdot').innerHTML=i<n?'<i class="ti ti-check" style="font-size:10px"></i>':i});
+}
+function showErr(msg){document.getElementById('upload-screen').style.display='block';alert(msg)}
+function copyRep(){
+  if(!lastR)return;
+  const sr=lastR.submission_route;
+  const txt=[`=== מגן ספקטרום | DHL Express Israel ===`,`תאריך: ${new Date().toLocaleDateString('he-IL')}`,`דגם: ${document.getElementById('fi-model').value||'—'}`,`יבואן: ${document.getElementById('fi-imp').value||'—'}`,``,`תוצאה: ${lastR.verdict_title||''}`,lastR.verdict_sub||'',`נקודות סיכון: ${Math.round(lastR.risk_points||0)}`,``,`נתיב: ${sr&&sr.route_name_he||'—'}`,`ניתן להגיש: ${sr&&sr.can_submit_now?'כן':'לא'}`,``,`סיכום: ${lastR.summary_text||''}`].join('\n');
+  navigator.clipboard.writeText(txt).then(()=>alert('הדוח הועתק')).catch(()=>alert('לא ניתן להעתיק'));
+}
+function newCheck(){
+  ['ds','dc','inv'].forEach(t=>rem(t));
+  ['fi-model','fi-imp','fi-mfr','fi-tech','fi-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('results').style.display='none';
+  document.getElementById('upload-screen').style.display='block';
+  lastR=null;dts_g=[];setStep(1);
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('act',i===0));
+  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('act',i===0));
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+loadHist();
+initKey();
+</script>
+</body>
+</html>
